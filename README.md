@@ -31,14 +31,22 @@ email-tracker-extension/
 │ ├── content.js
 │ └── icons/
 │
-└── server/ # Node.js backend for pixel tracking
-├── server.js
-├── package.json
-├── routes/
-│ └── tracker.js
-└── dot.png # 1×1 transparent tracking pixel
-```
+├──server/
+  ├── node_modules/
+  ├── package.json
+  ├── package-lock.json
+  ├── .env
+  ├── .gitignore
+  └── src/
+      ├── index.js
+      ├── routes/
+      |  ├── track.js
+      ├── models/
+      |  ├── EmailOpen.js
+      ├── utils/
+        └── notify.js
 
+```
 
 ---
 
