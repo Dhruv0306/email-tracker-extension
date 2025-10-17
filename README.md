@@ -45,7 +45,6 @@ email-tracker-extension/
       |  ├── EmailOpen.js
       ├── utils/
         └── notify.js
-
 ```
 
 ---
