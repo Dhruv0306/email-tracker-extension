@@ -3,7 +3,6 @@ import EmailOpen from "../models/EmailEvent.js";
 
 const router = express.Router();
 
-// Tracking pixel endpoint
 router.get("/:emailId/:recipient", async (req, res) => {
   const { emailId, recipient } = req.params;
 
@@ -13,10 +12,18 @@ router.get("/:emailId/:recipient", async (req, res) => {
       recipient,
       ip: req.ip,
       userAgent: req.get("User-Agent"),
-      clientInfo: { headers: req.headers }
+      clientInfo: { headers: req.headers },
     });
 
-    // Send 1x1 transparent PNG
+    // Emit a WebSocket notification
+    const io = req.app.get("io");
+    io.emit("emailOpened", {
+      emailId,
+      recipient,
+      timestamp: new Date(),
+    });
+
+    // Send 1x1 transparent pixel
     res.set("Content-Type", "image/png");
     const pixel = Buffer.from(
       "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=",
