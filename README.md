@@ -29,25 +29,14 @@ email-tracker-extension/
 │ ├── popup.html
 │ ├── popup.js
 │ ├── content.js
-│ └── icons/
 │
 ├──server/
   ├── node_modules/
-  ├── package.json
-  ├── package-lock.json
-  ├── .env
-  ├── .gitignore
-  └── src/
-      ├── index.js
-      ├── routes/
       |  ├── track.js
-      ├── models/
       |  ├── EmailOpen.js
       ├── utils/
         └── notify.js
 ```
-
----
 
 ## ⚙️ How It Works
 
@@ -68,13 +57,8 @@ cd email-tracker-extension
 ```
 --- 
 
-### 2️⃣ Backend Setup
-
 ```bash
 cd server
-npm install
-node server.js
-```
 
 This starts a simple Express + Socket.IO server that:
 - Serves tracking pixel requests at /track/:token.png
@@ -88,9 +72,6 @@ This starts a simple Express + Socket.IO server that:
 **2.** Go to: `chrome://extensions/`
 **3.** Enable **Developer Mode** (toggle top-right)
 **4.** Click **Load Unpacked**
-**5.** Select the `extension/` folder from this repository
-
-Your extension icon should now appear in the toolbar.
 Click it to open the dashboard popup.
 
 ---
@@ -123,15 +104,9 @@ If you plan to distribute or use this tracker in production:
 - Provide a clear privacy notice and opt-out option.
 - Comply with data protection laws (e.g., GDPR, ePrivacy Directive).
 
----
-
-## 🧭 Roadmap
 
 -  Implement backend tracking endpoint (/track/:token.png)
 -  Add real-time WebSocket events
--  Design notification & popup UI
--  Per-recipient open logs
--  Optional database (PostgreSQL / SQLite)
 -  Email integration (Nodemailer or API)
 -  Web Push notifications (outside browser)
 -  Cross-browser packaging (Firefox support)
