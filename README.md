@@ -9,10 +9,12 @@ A **Chrome & Edge browser extension** paired with a lightweight **Node.js backen
 - 🔍 **Email Open Tracking** — uses a unique 1×1 tracking pixel.
 - 👥 **Per-Recipient Insights** — see who opened your emails and when.  
 - ⚡ **Real-Time Notifications** — instant popup alerts when an email is opened.
-- 📊 **Dashboard View** — extension popup shows live stats for each email.
-- 🌐 **Cross-Browser Support** — works on both Chrome and Microsoft Edge.
-- 🧩 **Modular Architecture** — Node.js backend + extension frontend.
-- 🛡️ **Privacy Aware** — built for opt-in, user-consented tracking scenarios.
+- 📊 **Extension Dashboard** — popup shows live stats for each email
+- 🌐 **Web Dashboard** — browser-based real-time tracking interface
+- 🔄 **Live Updates** — WebSocket-powered real-time event streaming
+- 🌐 **Cross-Browser Support** — works on both Chrome and Microsoft Edge
+- 🧩 **Modular Architecture** — Node.js backend + extension frontend
+- 🛡️ **Privacy Aware** — built for opt-in, user-consented tracking scenarios
 
 ---
 
@@ -23,19 +25,31 @@ This project is split into two main parts:
 ```
 email-tracker-extension/
 │
-├── extension/ # Browser extension code (Manifest v3)
-│ ├── manifest.json
-│ ├── background.js
-│ ├── popup.html
-│ ├── popup.js
-│ ├── content.js
+├── extension/              # Browser extension code (Manifest v3)
+│   ├── manifest.json
+│   ├── background.js
+│   ├── popup.html
+│   ├── popup.js
+│   └── content.js
 │
-├──server/
-  ├── node_modules/
-      |  ├── track.js
-      |  ├── EmailOpen.js
-      ├── utils/
-        └── notify.js
+└── server/                 # Node.js backend server
+    ├── src/
+    │   ├── models/
+    │   │   └── EmailEvent.js
+    │   ├── routes/
+    │   │   └── track.js
+    │   ├── utils/
+    │   │   └── notify.js
+    │   └── index.js
+    ├── public/
+    │   └── dashboard/
+    │       ├── index.html
+    │       ├── dashboard.js
+    │       └── style.css
+    ├── test/
+    │   └── client-test.js
+    ├── .env
+    └── package.json
 ```
 
 ## ⚙️ How It Works
@@ -57,12 +71,36 @@ cd email-tracker-extension
 ```
 --- 
 
+### 2️⃣ Setup the Backend Server
+
+**1.** Navigate to server directory:
 ```bash
 cd server
+```
 
-This starts a simple Express + Socket.IO server that:
-- Serves tracking pixel requests at /track/:token.png
-- Broadcasts real-time "emailOpened" events via WebSocket
+**2.** Install dependencies:
+```bash
+npm install
+```
+
+**3.** Configure environment variables:
+Create a `.env` file with:
+```env
+MONGO_URI=your_mongodb_connection_string
+PORT=5000
+```
+
+**4.** Start the server:
+```bash
+# Development mode with auto-reload
+npm run dev
+
+# Production mode
+npm start
+```
+
+**5.** Access the dashboard:
+Open `http://localhost:5000/dashboard/` to view the web dashboard
 
 ---
 
@@ -73,6 +111,62 @@ This starts a simple Express + Socket.IO server that:
 **3.** Enable **Developer Mode** (toggle top-right)
 **4.** Click **Load Unpacked**
 Click it to open the dashboard popup.
+
+---
+
+## 📊 Web Dashboard
+
+The project includes a real-time web dashboard accessible at `http://localhost:5000/dashboard/` that shows:
+
+- **Live Email Opens** — Real-time notifications when emails are opened
+- **Recipient Details** — Shows who opened which email
+- **Timestamps** — Exact time when emails were opened
+- **Clean UI** — Modern, responsive design with real-time updates
+
+### Dashboard Features
+- Real-time WebSocket connection
+- Auto-updating event feed
+- Clean, modern interface
+- Mobile-responsive design
+
+---
+
+## 🔌 API Endpoints
+
+### Tracking Pixel
+- **GET** `/track/:emailId/:recipient`
+  - Serves 1×1 transparent PNG pixel
+  - Records email open event in database
+  - Emits real-time WebSocket notification
+  - **Parameters:**
+    - `emailId`: Unique identifier for the email
+    - `recipient`: Email address of the recipient
+
+### Dashboard
+- **GET** `/dashboard/`
+  - Serves the web dashboard interface
+  - Real-time WebSocket connection for live updates
+
+---
+
+## 🔧 Environment Configuration
+
+### Required Environment Variables
+Create a `.env` file in the `server/` directory:
+
+```env
+# MongoDB connection string
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/database
+
+# Server port (default: 5000)
+PORT=5000
+```
+
+### MongoDB Setup
+1. Create a free MongoDB Atlas account
+2. Create a new cluster
+3. Get your connection string
+4. Replace `<username>`, `<password>`, and `<database>` in the connection string
 
 ---
 
@@ -118,9 +212,10 @@ If you plan to distribute or use this tracker in production:
 | Layer                        | Technology                          |
 | ---------------------------- | ----------------------------------- |
 | **Frontend (Extension)**     | HTML, JS (Manifest V3), Chrome APIs |
+| **Frontend (Dashboard)**     | HTML, CSS, JavaScript, Socket.IO    |
 | **Backend**                  | Node.js, Express, Socket.IO         |
-| **Database (optional)**      | PostgreSQL / SQLite                 |
-| **Email Sending (optional)** | Nodemailer                          |
+| **Database**                 | MongoDB Atlas, Mongoose              |
+| **Real-time Communication** | WebSocket (Socket.IO)               |
 | **Notifications**            | Chrome Notifications API            |
 
 ---
