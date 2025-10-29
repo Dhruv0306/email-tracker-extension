@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Email Tracker Extension",
+  "description": "Shows real-time email open notifications and dashboard integration.",
+  "version": "1.0",
+  "permissions": ["notifications", "storage", "background"],
+  "host_permissions": ["http://localhost:5000/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["socket.io.client.mjs", "icons/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
