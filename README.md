@@ -80,7 +80,7 @@ The extension maintains a persistent WebSocket connection to the backend server 
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/<your-username>/email-tracker-extension.git
+git clone https://github.com/Dhruv0306/email-tracker-extension.git
 cd email-tracker-extension
 ```
 --- 
