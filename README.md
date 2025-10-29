@@ -181,7 +181,7 @@ Create a `.env` file in the `server/` directory:
 
 ```env
 # MongoDB connection string
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/database
+MONGO_URI=your_mongodb_connection_string
 
 # Server port (default: 5000)
 PORT=5000
