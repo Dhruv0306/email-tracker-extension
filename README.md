@@ -59,9 +59,23 @@ email-tracker-extension/
 3. The backend records the open event and sends a **real-time WebSocket notification** to your extension.  
 4. The extension’s background script receives the event and triggers a **desktop notification** + updates the dashboard.
 
+## 🔄 Real-Time Connection
+
+The extension maintains a persistent WebSocket connection to the backend server using Socket.IO:
+
+- **Background Service Worker** — Runs continuously to receive real-time notifications
+- **Local Storage** — Caches email open events for popup dashboard
+- **Chrome Notifications API** — Shows desktop alerts when emails are opened
+- **Auto-Reconnection** — Automatically reconnects if connection is lost
+
 ---
 
 ## 🏗️ Setup Instructions
+
+### Prerequisites
+- Node.js (for both server and extension dependencies)
+- Chrome or Microsoft Edge browser
+- MongoDB Atlas account (free tier available)
 
 ### 1️⃣ Clone the Repository
 
@@ -104,13 +118,24 @@ Open `http://localhost:5000/dashboard/` to view the web dashboard
 
 ---
 
-### 3️⃣ Load the Extension
+### 3️⃣ Setup Extension Dependencies
 
-**1.** Open **Chrome** or **Microsoft** **Edge**
-**2.** Go to: `chrome://extensions/`
-**3.** Enable **Developer Mode** (toggle top-right)
-**4.** Click **Load Unpacked**
-Click it to open the dashboard popup.
+**1.** Navigate to extension directory:
+```bash
+cd extension
+```
+
+**2.** Install Socket.IO client:
+```bash
+npm install
+```
+
+**3.** Load the Extension in Browser:
+- Open **Chrome** or **Microsoft Edge**
+- Go to: `chrome://extensions/`
+- Enable **Developer Mode** (toggle top-right)
+- Click **Load Unpacked** and select the extension folder
+- Click the extension icon to open the dashboard popup
 
 ---
 
@@ -172,13 +197,14 @@ PORT=5000
 
 ## 🧩 Extension Components
 
-| File            | Description                                                            |
-| --------------- | ---------------------------------------------------------------------- |
-| `manifest.json` | Defines permissions, background script, popup, and icons.              |
-| `background.js` | Maintains WebSocket connection & handles notifications.                |
-| `popup.html`    | Simple dashboard UI.                                                   |
-| `popup.js`      | Fetches and displays tracked events.                                   |
-| `content.js`    | (Optional) Injects tracking pixels into Gmail/Outlook compose windows. |
+| File               | Description                                                            |
+| ------------------ | ---------------------------------------------------------------------- |
+| `manifest.json`    | Defines permissions, background script, popup, and icons (Manifest V3) |
+| `background.js`    | Service worker with Socket.IO connection & real-time notifications    |
+| `popup.html`       | Extension dashboard UI                                                 |
+| `popup.js`         | Displays tracked events from local storage                            |
+| `socket-client.js` | Socket.IO client module wrapper                                       |
+| `content.js`       | (Optional) Injects tracking pixels into Gmail/Outlook compose windows |
 
 ---
 
@@ -211,7 +237,7 @@ If you plan to distribute or use this tracker in production:
 
 | Layer                        | Technology                          |
 | ---------------------------- | ----------------------------------- |
-| **Frontend (Extension)**     | HTML, JS (Manifest V3), Chrome APIs |
+| **Frontend (Extension)**     | HTML, JS (Manifest V3), Chrome APIs, Socket.IO |
 | **Frontend (Dashboard)**     | HTML, CSS, JavaScript, Socket.IO    |
 | **Backend**                  | Node.js, Express, Socket.IO         |
 | **Database**                 | MongoDB Atlas, Mongoose              |
