@@ -21,7 +21,6 @@ async def websocket_endpoint(websocket: WebSocket):
     await connect(websocket)
     client_id = id(websocket)
     print(f"Client connected: {client_id}")
-    message = {"event": "New_Connection", "client_id": client_id}
     try:
         while True:
             await websocket.receive_text()
@@ -29,5 +28,3 @@ async def websocket_endpoint(websocket: WebSocket):
         disconnect(websocket)
         client_id = id(websocket)
         print(f"Client disconnected: {client_id}")
-        message = {"event": "Disconnection", "client_id": client_id}
-        await broadcast(message)
