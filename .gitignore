@@ -69,3 +69,5 @@ config.local.js
 # Chrome extension user data (if stored locally)
 profile/
 user_data/
+
+.venv/
