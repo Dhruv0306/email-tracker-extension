@@ -15,7 +15,7 @@ function connect() {
         if (data.type === "email_opened") {
             chrome.notifications.create({
                 type: "basic",
-                iconUrl: "icons/icon.png",
+                iconUrl: "icons/icon-128.png",
                 title: "Email Opened",
                 message: `Email ${data.email_id} opened by ${data.recipient}`
             });
