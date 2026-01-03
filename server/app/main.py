@@ -23,7 +23,9 @@ async def websocket_endpoint(websocket: WebSocket):
     print(f"Client connected: {client_id}")
     try:
         while True:
-            await websocket.receive_text()
+            data = await websocket.receive_text()
+            if data == "{\"type\":\"ping\"}":
+                await websocket.send_text("{\"type\":\"pong\"}")
     except:
         disconnect(websocket)
         client_id = id(websocket)
