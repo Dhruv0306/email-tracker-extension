@@ -14,7 +14,7 @@ PIXEL = base64.b64decode(
 
 
 @router.get("/pixel/{email_id}/{recipient}")
-def track_pixel(email_id: str, recipient: str, request: Request):
+async def track_pixel(email_id: str, recipient: str, request: Request):
     db: Session = SessionLocal()
 
     event = EmailOpen(
