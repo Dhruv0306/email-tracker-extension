@@ -28,6 +28,8 @@ async def track_pixel(email_id: str, recipient: str, request: Request):
     db.commit()
     db.close()
 
+    print(f"Email opened: {email_id} for {recipient}")
+
     asyncio.create_task(
         broadcast(
             {"type": "email_opened", "email_id": email_id, "recipient": recipient}
