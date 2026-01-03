@@ -29,7 +29,7 @@ function connect() {
 }
 
 chrome.alarms.create("ws-heartbeat", {
-    periodInMinutes: 1
+    periodInMinutes: 0.5
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
