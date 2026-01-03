@@ -4,7 +4,8 @@
     "version": "0.1.0",
     "permissions": [
         "notifications",
-        "storage"
+        "storage",
+        "alarms"
     ],
     "background": {
         "service_worker": "background.js",
