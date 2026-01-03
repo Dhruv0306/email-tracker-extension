@@ -28,4 +28,18 @@ function connect() {
     };
 }
 
+chrome.alarms.create("ws-heartbeat", {
+    periodInMinutes: 1
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === "ws-heartbeat") {
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
+            connect();
+        } else {
+            socket.send(JSON.stringify({ type: "ping" }));
+        }
+    }
+});
+
 connect();
