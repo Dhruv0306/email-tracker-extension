@@ -1,9 +1,9 @@
-const WS_URL = "ws://127.0.0.1:8000/ws";
+import CONFIG from "./config.js";
 
 let socket;
 
 function connect() {
-    socket = new WebSocket(WS_URL);
+    socket = new WebSocket(CONFIG.WS_URL);
 
     socket.onopen = () => {
         console.log("✅ Connected to Email Tracker server");
