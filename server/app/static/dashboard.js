@@ -47,7 +47,7 @@ async function loadDetails(emailId) {
         row.innerHTML = `
         <td>${o.recipient}</td>
         <td>${new Date(o.opened_at).toLocaleString()}</td>
-        <td>${o.ip_address ?? "-"}</td>
+        <td>${o.ip ?? "-"}</td>
         <td style="max-width:300px; overflow:hidden; text-overflow:ellipsis;">
             ${o.user_agent ?? "-"}
         </td>
