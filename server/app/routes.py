@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from .database import get_db
 from .models import EmailOpen
-from .schemas import EmailSummary
+from .schemas import EmailSummary, EmailRecipientStats, EmailOpenEvent
 from .ws import broadcast
 import base64
 import asyncio
@@ -51,6 +51,21 @@ def list_emails(db: Session = Depends(get_db)):
         )
         .group_by(EmailOpen.email_id)
         .order_by(func.count(EmailOpen.id).desc())
+        .all()
+    )
+
+    return results
+
+
+@router.get("/emails/{email_id}", response_model=list[EmailRecipientStats])
+def email_details(email_id: str, db: Session = Depends(get_db)):
+    results = (
+        db.query(
+            EmailOpen.recipient,
+            func.count(EmailOpen.id).label("open_count"),
+        )
+        .filter(EmailOpen.email_id == email_id)
+        .group_by(EmailOpen.recipient)
         .all()
     )
 
