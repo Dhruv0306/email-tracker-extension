@@ -1,15 +1,19 @@
 from fastapi import FastAPI
 from fastapi import WebSocket
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from fastapi import Request
 from .database import engine, Base
 from .routes import router
 from .ws import connect, disconnect, broadcast
 
 Base.metadata.create_all(bind=engine)
 
+tamplates = Jinja2Templates(directory="app/templates")
 app = FastAPI(title="Email Tracker Phase 1")
 
 app.include_router(router)
-
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 @app.get("/")
 def root():
