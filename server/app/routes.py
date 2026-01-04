@@ -72,9 +72,7 @@ def email_details(email_id: str, db: Session = Depends(get_db)):
     return results
 
 
-@router.get(
-    "/emails/{email_id}/opens", response_model=list[EmailOpenEvent]
-)
+@router.get("/emails/{email_id}/opens", response_model=list[EmailOpenEvent])
 def email_open_events(email_id: str, db: Session = Depends(get_db)):
     events = (
         db.query(EmailOpen)
