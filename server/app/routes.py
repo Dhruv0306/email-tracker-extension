@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Request, Response, Depends
+from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from .database import get_db
 from .models import EmailOpen
 from .schemas import EmailSummary, EmailRecipientStats, EmailOpenEvent
 from .ws import broadcast
+from .ui import templates
 import base64
 import asyncio
 
@@ -13,6 +15,11 @@ router = APIRouter(prefix="/api")
 PIXEL = base64.b64decode(
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII="
 )
+
+
+# =========================================================================
+# Email tracking routes
+# =========================================================================
 
 
 @router.get("/pixel/{email_id}/{recipient}")
@@ -82,3 +89,13 @@ def email_open_events(email_id: str, db: Session = Depends(get_db)):
     )
 
     return events
+
+
+# =========================================================================
+# Dashboard routes
+# =========================================================================
+
+
+@router.get("/dashboard", response_class=HTMLResponse)
+def dashboard(request: Request):
+    return templates.TemplateResponse("dashboard.html", {"request": request})
