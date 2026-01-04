@@ -88,8 +88,8 @@ The primary goals of this project are:
 ## 🛠 Tech Stack (Planned)
 
 - **Browser Extension**: JavaScript (Manifest V3)
-- **Backend**: Node.js (Express)
-- **Database**: MongoDB (or SQLite for local mode)
+- **Backend**: Python (FastAPI)
+- **Database**: PostgreSQL
 - **Real-time Events**: WebSockets
 - **Hosting**: Self-hosted / Cloud-friendly
 
