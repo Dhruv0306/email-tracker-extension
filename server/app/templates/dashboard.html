@@ -5,7 +5,25 @@
     <title>Email Tracker Dashboard</title>
     <script src="/static/dashboard.js" defer></script>
     <style>
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --table-border: #dddddd;
+            --table-header: #f0f0f0;
+            --row-hover: #f5f5f5;
+        }
+
+        [data-theme="dark"] {
+            --bg: #121212;
+            --text: #eaeaea;
+            --table-border: #333;
+            --table-header: #1e1e1e;
+            --row-hover: #222;
+        }
+
         body {
+            background-color: var(--bg);
+            color: var(--text);
             font-family: Arial, sans-serif;
             padding: 20px;
         }
@@ -13,45 +31,39 @@
         table {
             border-collapse: collapse;
             width: 100%;
-            margin-top: 20px;
+            margin-bottom: 30px;
         }
 
         th,
         td {
-            border: 1px solid #ddd;
+            border: 1px solid var(--table-border);
             padding: 8px;
         }
 
+        th {
+            background-color: var(--table-header);
+        }
+
         tr:hover {
-            background-color: #f5f5f5;
+            background-color: var(--row-hover);
             cursor: pointer;
         }
 
-        #details {
-            margin-top: 30px;
-        }
-
-        table {
-            margin-bottom: 30px;
-        }
-
-        th {
-            background-color: #f0f0f0;
-        }
-
-        td {
-            font-size: 14px;
-        }
-
-        h3 {
-            margin-top: 25px;
+        button {
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
 
-    <h1>📬 Email Tracker Dashboard</h1>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1>📬 Email Tracker Dashboard</h1>
+        <button id="theme-toggle">🌙 Dark Mode</button>
+    </div>
+
 
     <h2>Tracked Emails</h2>
     <table id="emails-table">
