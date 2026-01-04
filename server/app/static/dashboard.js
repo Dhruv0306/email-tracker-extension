@@ -25,8 +25,35 @@ async function loadDetails(emailId) {
     const recipients = await recipientsRes.json();
     const opens = await opensRes.json();
 
-    document.getElementById("details-content").textContent =
-        JSON.stringify({ recipients, opens }, null, 2);
+    // Recipients table
+    const recipientsBody = document.querySelector("#recipients-table tbody");
+    recipientsBody.innerHTML = "";
+
+    recipients.forEach(r => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+        <td>${r.recipient}</td>
+        <td>${r.open_count}</td>
+        `;
+        recipientsBody.appendChild(row);
+    });
+
+    // Opens table
+    const opensBody = document.querySelector("#opens-table tbody");
+    opensBody.innerHTML = "";
+
+    opens.forEach(o => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+        <td>${o.recipient}</td>
+        <td>${new Date(o.opened_at).toLocaleString()}</td>
+        <td>${o.ip_address ?? "-"}</td>
+        <td style="max-width:300px; overflow:hidden; text-overflow:ellipsis;">
+            ${o.user_agent ?? "-"}
+        </td>
+        `;
+        opensBody.appendChild(row);
+    });
 }
 
 loadEmails();
