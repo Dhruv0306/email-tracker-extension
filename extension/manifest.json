@@ -18,8 +18,7 @@
         "128": "icons/icon-128.png"
     },
     "action": {
-        "default_popup": "popup.html",
-        "type": "module"
+        "default_popup": "popup.html"
     },
     "host_permissions": [
         "http://127.0.0.1:8000/*"
