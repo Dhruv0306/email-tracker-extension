@@ -42,7 +42,7 @@ async def track_pixel(
 
     asyncio.create_task(
         broadcast(
-            {"type": "email_opened", "email_id": email_id, "recipient": recipient}
+            {"type": "email_opened", "email_id": email_id, "recipient": recipient, "timestamp": event.opened_at.isoformat()}
         )
     )
 
