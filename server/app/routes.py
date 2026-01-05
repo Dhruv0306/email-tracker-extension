@@ -36,13 +36,20 @@ async def track_pixel(
 
     db.add(event)
     db.commit()
-    db.close()
+    db.refresh(event)
 
-    print(f"Email opened: {email_id} for {recipient}")
+    opened_at = format_datetime(event.opened_at)
+
+    print(f"Email opened: {email_id} for {recipient} at {opened_at}")
 
     asyncio.create_task(
         broadcast(
-            {"type": "email_opened", "email_id": email_id, "recipient": recipient, "timestamp": event.opened_at.isoformat()}
+            {
+                "type": "email_opened",
+                "email_id": email_id,
+                "recipient": recipient,
+                "timestamp": opened_at,
+            }
         )
     )
 
@@ -90,6 +97,10 @@ def email_open_events(email_id: str, db: Session = Depends(get_db)):
 
     return events
 
+
+# Helper Function to convert utc datetime to string
+def format_datetime(dt):
+    return dt.strftime("%Y-%m-%d %H:%M:%S UTC")
 
 # =========================================================================
 # Dashboard routes

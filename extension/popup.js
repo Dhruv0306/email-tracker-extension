@@ -1,38 +1,40 @@
 import CONFIG from "./config.js";
-const API_BASE = CONFIG.API_BASE;
+import { updateBadge } from "./utils.js";
 
-async function loadEmails() {
-  try {
-    const res = await fetch(`${API_BASE}/emails/`);
-    const emails = await res.json();
+document.addEventListener("DOMContentLoaded", () => {
+	chrome.storage.local.get(["unseenOpens"], (res) => {
+		const unseenOpens = res.unseenOpens || [];
+		renderUnseenOpens(unseenOpens);
+		markAllAsSeen();
+	});
 
-    const tbody = document.getElementById("emails-body");
-    tbody.innerHTML = "";
+	document.getElementById("open-dashboard").onclick = () => {
+		chrome.tabs.create({ url: `${CONFIG.API_BASE}/dashboard` });
+	};
+});
 
-    emails.slice(0, 5).forEach(email => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${email.email_id}</td>
-        <td>${email.total_opens}</td>
-      `;
+function renderUnseenOpens(unseenOpens) {
+	const container = document.getElementById("unseen");
 
-      row.onclick = () => {
-        chrome.tabs.create({
-          url: `${CONFIG.API_BASE}/dashboard`
-        });
-      };
+	if (unseenOpens.length === 0) {
+		container.innerHTML = "<p>No new email opens</p>";
+		return;
+	}
 
-      tbody.appendChild(row);
-    });
-  } catch (err) {
-    console.error("Failed to load emails", err);
-  }
+	container.innerHTML = unseenOpens
+		.slice(-10)
+		.reverse()
+		.map(
+			(o) =>
+				`<div class="open-item">
+          <strong>${o.recipient}</strong> opened <em>${o.emailId}</em> at ${o.timestamp}
+        </div>`
+		)
+		.join("");
 }
 
-document.getElementById("open-dashboard").onclick = () => {
-  chrome.tabs.create({
-    url: `${CONFIG.API_BASE}/dashboard`
-  });
-};
-
-loadEmails();
+function markAllAsSeen() {
+	chrome.storage.local.set({ unseenOpens: [] }, () => {
+		updateBadge();
+	});
+}
