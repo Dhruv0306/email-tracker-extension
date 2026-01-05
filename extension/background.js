@@ -1,8 +1,11 @@
 import CONFIG from "./config.js";
+import { handleEmailOpened, updateBadge } from "./utils.js";
 
 let socket;
 
 function connect() {
+    chrome.runtime.onStartup.addListener(updateBadge);
+    chrome.runtime.onInstalled.addListener(updateBadge);
     socket = new WebSocket(CONFIG.WS_URL);
 
     socket.onopen = () => {
@@ -19,6 +22,8 @@ function connect() {
                 title: "Email Opened",
                 message: `Email ${data.email_id} opened by ${data.recipient}`
             });
+            handleEmailOpened(event);
+            updateBadge();
         }
     };
 

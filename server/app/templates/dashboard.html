@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Email Tracker Dashboard</title>
+    <script src="/static/dashboard.js" defer></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --table-border: #dddddd;
+            --table-header: #f0f0f0;
+            --row-hover: #f5f5f5;
+        }
+
+        [data-theme="dark"] {
+            --bg: #121212;
+            --text: #eaeaea;
+            --table-border: #333;
+            --table-header: #1e1e1e;
+            --row-hover: #222;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--table-border);
+            padding: 8px;
+        }
+
+        th {
+            background-color: var(--table-header);
+        }
+
+        tr:hover {
+            background-color: var(--row-hover);
+            cursor: pointer;
+        }
+
+        button {
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1>📬 Email Tracker Dashboard</h1>
+        <button id="theme-toggle">🌙 Dark Mode</button>
+    </div>
+
+
+    <h2>Tracked Emails</h2>
+    <table id="emails-table">
+        <thead>
+            <tr>
+                <th>Email ID</th>
+                <th>Total Opens</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <div id="details">
+        <h2>Email Details</h2>
+        <h3>Click on an email to view details</h3>
+
+        <h3>Recipients</h3>
+        <table id="recipients-table">
+            <thead>
+                <tr>
+                    <th>Recipient</th>
+                    <th>Open Count</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h3>Open Events</h3>
+        <table id="opens-table">
+            <thead>
+                <tr>
+                    <th>Recipient</th>
+                    <th>Opened At</th>
+                    <th>IP</th>
+                    <th>User Agent</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>
